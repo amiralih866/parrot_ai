@@ -1,10 +1,12 @@
 import datetime
 
+import telegram.error
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes, CommandHandler
 from main import ai as parrot
 
 TELEGRAM_BOT_TOKEN = ("7850863295:AAHZa5ZmSRAWa8br-IoXuFQ23S3P6BcW_9w")
+TEST_BOT_TOKEN = ("7940159413:AAHwcDpIqx2oychT7DvtUjRNzbwRgCXy9Ao")
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -26,15 +28,22 @@ app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
 
 
 async def chat_with_parrot(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    message = update.message.text.lower()
-    if message.startswith('chat '):
-        await update.message.reply_text('Thinking...')
-        reply = str(update.message).lower().split('chat ')[1]
-        await update.message.reply_text(str(parrot(reply)))
-    elif message.startswith('چت '):
+    try:
+        message = str(update.message.text)
+    except AttributeError:
+        await update.message.reply_text("""
+        متاسفانه در پردازش پیام شما دچار مشکل شدم، دوباره تلاش کنید 😁
+        """)
+        return
+
+    if message.startswith('چت '):
         await update.message.reply_text('Thinking...')
         reply = str(update.message).lower().split('چت ')[1]
-        await update.message.reply_text(str(parrot(reply)))
+        try:
+            await update.message.reply_text(str(parrot(reply)))
+        except telegram.error.BadRequest:
+            await update.message.reply_text(telegram.error.BadRequest.message)
+            return
 
 
 app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), chat_with_parrot))

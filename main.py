@@ -13,5 +13,5 @@ def ai(ask: str):
         model="gemini-2.0-flash",
         contents=ask
     )
-    print(response.text)
+    # print(response.text)
     return response.text
