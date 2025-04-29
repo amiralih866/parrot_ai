@@ -1,12 +1,11 @@
-import datetime
-
 import telegram.error
 from telegram import Update
+from telegram.constants import ParseMode
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes, CommandHandler
 from main import ai as parrot
 
-TELEGRAM_BOT_TOKEN = ("7850863295:AAHZa5ZmSRAWa8br-IoXuFQ23S3P6BcW_9w")
-TEST_BOT_TOKEN = ("7940159413:AAHwcDpIqx2oychT7DvtUjRNzbwRgCXy9Ao")
+TELEGRAM_BOT_TOKEN = "7850863295:AAHZa5ZmSRAWa8br-IoXuFQ23S3P6BcW_9w"
+TEST_BOT_TOKEN = "7940159413:AAHwcDpIqx2oychT7DvtUjRNzbwRgCXy9Ao"
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -24,24 +23,29 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """)
 
 
-app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
+app = ApplicationBuilder().token(TEST_BOT_TOKEN).build()
 
 
 async def chat_with_parrot(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         message = str(update.message.text)
     except AttributeError:
-        await update.message.reply_text("""
-        متاسفانه در پردازش پیام شما دچار مشکل شدم، دوباره تلاش کنید 😁
-        """)
+        try:
+            await update.message.reply_text("متاسفانه در پردازش پیام شما دچار مشکل شدم، دوباره تلاش کنید 😁")
+        except Exception as e:
+            print('This error is not recognized')
+            print(f"ERROR: {e}")
         return
-
     if message.startswith('چت '):
         await update.message.reply_text('Thinking...')
         reply = str(update.message).lower().split('چت ')[1]
         try:
-            await update.message.reply_text(str(parrot(reply)))
+            print('@' + update.message.chat.username + ' asked ' + reply + ':')
+            chat_reply = parrot(reply)
+            await update.message.reply_text(text=chat_reply, parse_mode=ParseMode.MARKDOWN_V2)
+            print("Chat replied: " + chat_reply)
         except telegram.error.BadRequest:
+            print('a')
             await update.message.reply_text(telegram.error.BadRequest.message)
             return
 
