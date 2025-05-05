@@ -31,7 +31,7 @@ async def chat_with_parrot(update: Update, context: ContextTypes.DEFAULT_TYPE):
         message = str(update.message.text)
 
         if message.startswith('چت '):
-            await update.message.reply_text('بذار بکم فکر کنم🤔...')
+            await update.message.reply_text('بذار یکم فکر کنم🤔...')
             reply = str(update.message.text).split('چت ', 1)[1]
 
             try:
