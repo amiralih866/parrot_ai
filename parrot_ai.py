@@ -23,7 +23,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """)
 
 
-app = ApplicationBuilder().token(TEST_BOT_TOKEN).build()
+app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
 
 
 async def chat_with_parrot(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -40,7 +40,7 @@ async def chat_with_parrot(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text('Thinking...')
         reply = str(update.message).lower().split('چت ')[1]
         try:
-            print('@' + update.message.chat.username + ' asked ' + reply + ':')
+            print('asked ' + reply + ':')
             chat_reply = parrot(reply)
             await update.message.reply_text(text=chat_reply, parse_mode=ParseMode.MARKDOWN_V2)
             print("Chat replied: " + chat_reply)
