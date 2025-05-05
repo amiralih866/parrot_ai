@@ -42,7 +42,7 @@ async def chat_with_parrot(update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
             print('asked ' + reply + ':')
             chat_reply = parrot(reply)
-            await update.message.reply_text(text=chat_reply, parse_mode=ParseMode.MARKDOWN_V2)
+            await update.message.reply_text(text=chat_reply, parse_mode=ParseMode.MARKDOWN)
             print("Chat replied: " + chat_reply)
         except telegram.error.BadRequest:
             print('a')
