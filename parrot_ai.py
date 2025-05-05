@@ -31,7 +31,7 @@ async def chat_with_parrot(update: Update, context: ContextTypes.DEFAULT_TYPE):
         message = str(update.message.text)
 
         if message.startswith('چت '):
-            await update.message.reply_text('Thinking...')
+            await update.message.reply_text('بذار بکم فکر کنم🤔...')
             reply = str(update.message.text).split('چت ', 1)[1]
 
             try:
@@ -47,7 +47,7 @@ async def chat_with_parrot(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
                 print("Chat replied: " + chat_reply)
             except Exception as e:
-                error_message = f"Error processing request: {str(e)}"
+                error_message = f"در کنکاش پیامت به این مشکل برخوردم ببین میفهمی چی میگه🤷🏻‍♂️؟: {str(e)}"
                 await update.message.reply_text(error_message)
                 print(f"ERROR: {error_message}")
 
@@ -56,7 +56,7 @@ async def chat_with_parrot(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         print(f"Unhandled error: {str(e)}")
         try:
-            await update.message.reply_text("An unexpected error occurred. Please try again.")
+            await update.message.reply_text("سرم گیج رفته نمیفهمم چی میگی")
         except:
             print("Could not send error message to user")
 

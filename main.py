@@ -27,10 +27,10 @@ def ai(ask: str):
         error_message = str(e)
 
         if "blocked" in error_message.lower() or "safety" in error_message.lower():
-            return f"Content policy violation: {error_message}"
+            return f"داری از خط قرمز ها عدول میکنی حواسم بهت هست: {error_message}"
         elif "rate" in error_message.lower() and "limit" in error_message.lower():
-            return f"Rate limit exceeded: {error_message}. Please try again later."
+            return f"حاجی من ذهنم انقدر رو جواب نمیده: {error_message}. بعدا تلاش کن شاید فهمیدم."
         elif "invalid" in error_message.lower() or "api key" in error_message.lower():
-            return f"Invalid input or configuration: {error_message}"
+            return f"خودت فهمیدی چی گفتی؟: {error_message}"
         else:
-            return f"An unexpected error occurred: {error_message}"
+            return f"اینو انیشتن هم نمیفهمه چه برسه به من: {error_message}"
