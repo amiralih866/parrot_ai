@@ -29,25 +29,36 @@ app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
 async def chat_with_parrot(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         message = str(update.message.text)
+
+        if message.startswith('چت '):
+            await update.message.reply_text('Thinking...')
+            reply = str(update.message.text).split('چت ', 1)[1]
+
+            try:
+                print('asked ' + reply + ':')
+                chat_reply = parrot(reply)
+
+                # Try to send response with Markdown
+                try:
+                    await update.message.reply_text(text=chat_reply, parse_mode=ParseMode.MARKDOWN)
+                except telegram.error.BadRequest:
+                    # If Markdown parsing fails, send without formatting
+                    await update.message.reply_text(text=chat_reply, parse_mode=None)
+
+                print("Chat replied: " + chat_reply)
+            except Exception as e:
+                error_message = f"Error processing request: {str(e)}"
+                await update.message.reply_text(error_message)
+                print(f"ERROR: {error_message}")
+
     except AttributeError:
+        await update.message.reply_text("متاسفانه در پردازش پیام شما دچار مشکل شدم، دوباره تلاش کنید 😁")
+    except Exception as e:
+        print(f"Unhandled error: {str(e)}")
         try:
-            await update.message.reply_text("متاسفانه در پردازش پیام شما دچار مشکل شدم، دوباره تلاش کنید 😁")
-        except Exception as e:
-            print('This error is not recognized')
-            print(f"ERROR: {e}")
-        return
-    if message.startswith('چت '):
-        await update.message.reply_text('Thinking...')
-        reply = str(update.message).lower().split('چت ')[1]
-        try:
-            print('asked ' + reply + ':')
-            chat_reply = parrot(reply)
-            await update.message.reply_text(text=chat_reply, parse_mode=ParseMode.MARKDOWN)
-            print("Chat replied: " + chat_reply)
-        except telegram.error.BadRequest:
-            print('a')
-            await update.message.reply_text(telegram.error.BadRequest.message)
-            return
+            await update.message.reply_text("An unexpected error occurred. Please try again.")
+        except:
+            print("Could not send error message to user")
 
 
 app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), chat_with_parrot))
