@@ -4,7 +4,7 @@ from telegram.constants import ParseMode
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes, CommandHandler
 from main import ai as parrot
 
-TELEGRAM_BOT_TOKEN = "7850863295:AAHZa5ZmSRAWa8br-IoXuFQ23S3P6BcW_9w"
+TELEGRAM_BOT_TOKEN = "8012916137:AAFNtbUVMteWQx53VDIRehDLRd27Gx6KXUc"
 TEST_BOT_TOKEN = "7940159413:AAHwcDpIqx2oychT7DvtUjRNzbwRgCXy9Ao"
 
 
@@ -39,11 +39,7 @@ async def chat_with_parrot(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 chat_reply = parrot(reply)
 
                 # Try to send response with Markdown
-                try:
-                    await update.message.reply_text(text=chat_reply, parse_mode=ParseMode.MARKDOWN)
-                except telegram.error.BadRequest:
-                    # If Markdown parsing fails, send without formatting
-                    await update.message.reply_text(text=chat_reply, parse_mode=None)
+                await update.message.reply_text(text=chat_reply, parse_mode=ParseMode.MARKDOWN)
 
                 print("Chat replied: " + chat_reply)
             except Exception as e:
